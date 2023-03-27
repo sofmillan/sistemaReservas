@@ -1,5 +1,6 @@
 package com.example.workshopLHotelAshir.controller;
 
+import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
 import com.example.workshopLHotelAshir.service.ServiceReserva;
@@ -20,11 +21,11 @@ public class ControllerReserva {
     }
 
     @PostMapping("/cliente/{cedula}/habitacion/{numero}/fecha/{fechaReserva}/reservar")
-    public ResponseEntity<Reserva> add(@PathVariable ("cedula") Long cedula,
-                                       @PathVariable ("numero") Integer numero,
-                                       @PathVariable ("fechaReserva") String fechaReserva){
-        Reserva reserva1 = reservaService.reservar(cedula, numero, fechaReserva);
-        return ResponseEntity.ok(reserva1);
+    public ResponseEntity<Confirmacion> add(@PathVariable ("cedula") Long cedula,
+                                            @PathVariable ("numero") Integer numero,
+                                            @PathVariable ("fechaReserva") String fechaReserva){
+        Confirmacion confirmacion1 = reservaService.reservar(cedula, numero, fechaReserva);
+        return ResponseEntity.ok(confirmacion1);
     }
 
 

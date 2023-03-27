@@ -1,6 +1,7 @@
 package com.example.workshopLHotelAshir.service;
 
 import com.example.workshopLHotelAshir.model.Cliente;
+import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
 import com.example.workshopLHotelAshir.repository.RepositoryCliente;
@@ -28,7 +29,7 @@ public class ServiceReserva {
         this.reservaRepository = reservaRepository;
     }
 
-    public Reserva reservar(Long cedula, Integer numero, String fecha){
+    public Confirmacion reservar(Long cedula, Integer numero, String fecha){
         if (cedula <= 0 || numero <= 0 || fecha == null){
             throw new RuntimeException("Los datos no son válidos");
         }
@@ -41,24 +42,33 @@ public class ServiceReserva {
 
             LocalDate date = LocalDate.parse(fecha, formatter);
             Habitacion hab1 = habitacion.get();
+            List<Integer> disponiblesId = this.reservaRepository.getAvailability(fecha);
+            if(disponiblesId.contains(hab1.getNumero())){
+                if(date.isBefore(LocalDate.now())){
+                    throw new RuntimeException("La fecha no puede ser anterior a la actual");
+                }
+                double descuento =0;
+                Reserva reserva = new Reserva(cliente.get(),habitacion.get(),date);
+                if(hab1.getTipoHabitacion().equalsIgnoreCase("premium")){
+                    descuento = hab1.getPrecioBase() * 0.05;
+                }
+                reserva.setTotal(hab1.getPrecioBase()-descuento);
+                this.reservaRepository.save(reserva);
 
-            if(date.isBefore(LocalDate.now())){
-                throw new RuntimeException("La fecha no puede ser anterior a la actual");
+                Confirmacion confirmacion = new Confirmacion(reserva.getCodigo(),reserva.getFechaReserva(),
+                        reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
+                return confirmacion;
+            }else{
+                throw new RuntimeException("Habitación no disponible");
             }
-            double descuento =0;
-            Reserva reserva = new Reserva(cliente.get(),habitacion.get(),date);
-            if(hab1.getTipoHabitacion().equalsIgnoreCase("premium")){
-                descuento = hab1.getPrecioBase() * 0.05;
-            }
-            reserva.setTotal(hab1.getPrecioBase()-descuento);
 
-            this.reservaRepository.save(reserva);
-            return reserva;
         }
 
 
-        return new Reserva();
+        return new Confirmacion();
     }
+
+
 
     public List<Reserva> getByClient(Long cedula){
         return this.reservaRepository.findAllById(cedula);
