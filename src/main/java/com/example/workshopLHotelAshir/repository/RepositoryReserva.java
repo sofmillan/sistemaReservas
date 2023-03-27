@@ -12,6 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface RepositoryReserva extends CrudRepository<Reserva, UUID> {
-    @Query("SELECT r FROM Reserva r WHERE r.cliente LIKE %?1%")
+    @Query("SELECT r FROM Reserva r WHERE r.cliente.cedula = ?1")
     public List<Reserva> findAllById(Long keyword);
 }

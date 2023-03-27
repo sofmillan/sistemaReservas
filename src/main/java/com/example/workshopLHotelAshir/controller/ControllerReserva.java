@@ -19,11 +19,17 @@ public class ControllerReserva {
         this.reservaService = reservaService;
     }
 
-    @PostMapping("/reserva")
-    public ResponseEntity<Reserva> add(@RequestBody Reserva reserva){
-        Reserva reserva1 = reservaService.reservar(reserva);
+    @PostMapping("/cliente/{cedula}/habitacion/{numero}/fecha/{fechaReserva}/reservar")
+    public ResponseEntity<Reserva> add(@PathVariable ("cedula") Long cedula,
+                                       @PathVariable ("numero") Integer numero,
+                                       @PathVariable ("fechaReserva") String fechaReserva){
+        Reserva reserva1 = reservaService.reservar(cedula, numero, fechaReserva);
         return ResponseEntity.ok(reserva1);
     }
+
+
+
+
     @GetMapping("/cliente/{cedula}")
     public List<Reserva> getByClient(@PathVariable Long cedula){
         return this.reservaService.getByClient(cedula);

@@ -26,15 +26,15 @@ public class ServiceReserva {
         this.reservaRepository = reservaRepository;
     }
 
-    public Reserva reservar(Reserva datos){
+    public Reserva reservar(Long cedula, Integer numero, String fecha){
         System.out.println("entró a service reservar");
-        System.out.println(datos.getCliente());
-        Optional<Cliente> cliente = this.clienteRepository.findById(datos.getCliente().getCedula());
-        Optional<Habitacion> habitacion = this.habitacionRepository.findById(datos.getHabitacion().getNumero());
+
+        Optional<Cliente> cliente = this.clienteRepository.findById(cedula);
+        Optional<Habitacion> habitacion = this.habitacionRepository.findById(numero);
 
         if(cliente.isPresent() && habitacion.isPresent()){
             System.out.println("Encontrados");
-            Reserva reserva = new Reserva(cliente.get(),habitacion.get(),datos.getFechaReserva());
+            Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
             this.reservaRepository.save(reserva);
             System.out.println("Nueva reserva hecha");
             return reserva;
