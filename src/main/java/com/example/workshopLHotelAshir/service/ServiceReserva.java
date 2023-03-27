@@ -48,7 +48,11 @@ public class ServiceReserva {
         return this.reservaRepository.findAllById(cedula);
     }
 
-    public List<Habitacion> getByDate(String date){
+    public List<Habitacion> getByDate(String date) {
         return this.reservaRepository.findByDate(date);
+    }
+
+    public List<Habitacion> getByDateType(String date, String tipo){
+        return this.reservaRepository.findByDateType(date, tipo);
     }
 }

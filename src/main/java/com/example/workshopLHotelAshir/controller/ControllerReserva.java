@@ -39,4 +39,8 @@ public class ControllerReserva {
     public List<Habitacion> getByDate(@RequestParam String fecha){
         return this.reservaService.getByDate(fecha);
     }
+    @GetMapping("/disponibilidad")
+    public List<Habitacion> getByDateType(@RequestParam String fecha, @RequestParam String tipo){
+        return this.reservaService.getByDateType(fecha,tipo);
+    }
 }
