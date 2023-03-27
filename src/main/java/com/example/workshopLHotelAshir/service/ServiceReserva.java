@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,20 +29,34 @@ public class ServiceReserva {
     }
 
     public Reserva reservar(Long cedula, Integer numero, String fecha){
-        System.out.println("entró a service reservar");
+        if (cedula <= 0 || numero <= 0 || fecha == null){
+            throw new RuntimeException("Los datos no son válidos");
+        }
 
         Optional<Cliente> cliente = this.clienteRepository.findById(cedula);
         Optional<Habitacion> habitacion = this.habitacionRepository.findById(numero);
 
         if(cliente.isPresent() && habitacion.isPresent()){
-            System.out.println("Encontrados");
-            Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            LocalDate date = LocalDate.parse(fecha, formatter);
+            Habitacion hab1 = habitacion.get();
+
+            if(date.isBefore(LocalDate.now())){
+                throw new RuntimeException("La fecha no puede ser anterior a la actual");
+            }
+            double descuento =0;
+            Reserva reserva = new Reserva(cliente.get(),habitacion.get(),date);
+            if(hab1.getTipoHabitacion().equalsIgnoreCase("premium")){
+                descuento = hab1.getPrecioBase() * 0.05;
+            }
+            reserva.setTotal(hab1.getPrecioBase()-descuento);
+
             this.reservaRepository.save(reserva);
-            System.out.println("Nueva reserva hecha");
             return reserva;
         }
 
-        System.out.println("No creó la reserva");
+
         return new Reserva();
     }
 

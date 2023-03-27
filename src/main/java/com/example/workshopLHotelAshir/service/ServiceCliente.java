@@ -17,6 +17,7 @@ public class ServiceCliente {
 
     public Cliente crear(Cliente cliente){
         if(cliente.getApellido()==null||cliente.getNombre()==null){
+
             throw new RuntimeException(("Nombre y apellido no pueden ser nulos"));
         }
         this.repositoryCliente.save(cliente);
