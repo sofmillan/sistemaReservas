@@ -34,4 +34,9 @@ public class ControllerReserva {
     public List<Reserva> getByClient(@PathVariable Long cedula){
         return this.reservaService.getByClient(cedula);
     }
+
+    @GetMapping("/disponible")
+    public List<Habitacion> getByDate(@RequestParam String fecha){
+        return this.reservaService.getByDate(fecha);
+    }
 }

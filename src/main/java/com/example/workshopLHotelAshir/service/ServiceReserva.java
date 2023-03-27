@@ -47,4 +47,8 @@ public class ServiceReserva {
     public List<Reserva> getByClient(Long cedula){
         return this.reservaRepository.findAllById(cedula);
     }
+
+    public List<Habitacion> getByDate(String date){
+        return this.reservaRepository.findByDate(date);
+    }
 }
