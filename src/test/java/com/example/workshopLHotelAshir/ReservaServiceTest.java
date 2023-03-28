@@ -3,15 +3,19 @@ package com.example.workshopLHotelAshir;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
+import com.example.workshopLHotelAshir.model.Reserva;
 import com.example.workshopLHotelAshir.repository.RepositoryCliente;
 import com.example.workshopLHotelAshir.repository.RepositoryHabitacion;
 import com.example.workshopLHotelAshir.repository.RepositoryReserva;
-
+import static org.junit.Assert.assertTrue;
 import com.example.workshopLHotelAshir.service.ServiceReserva;
 import org.junit.*;
 
 import java.util.Optional;
 
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 
@@ -66,6 +70,54 @@ public class ReservaServiceTest {
         verify(reservaRepository,times(1)).save(any());
     }
 
+  //  @Test(expected=RuntimeException.class)
+
+
+    @Test(expected = RuntimeException.class)
+    public void pruebaHabitacionNoEncontrada(){
+        Long cedula = 123L;
+        Integer numero = 101;
+        String fecha = "2010-05-05";
+        Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
+        Habitacion habitacion = new Habitacion(101,"premium",100000.0);
+        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
+        when(habitacionRepository.findById(any())).thenReturn(Optional.empty());
+        Reserva reserva = new Reserva(cliente,habitacion,fecha);
+        assertTrue(reserva.getCliente() == null);
+        assertTrue(reserva.getHabitacion() == null);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void pruebaClienteNoEncontrado(){
+        Long cedula = 123L;
+        Integer numero = 101;
+        String fecha = "2010-05-05";
+        Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
+        Habitacion habitacion = new Habitacion(101,"premium",100000.0);
+        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        when(clienteRepository.findById(any())).thenReturn(Optional.empty());
+        when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
+        Reserva reserva = new Reserva(cliente,habitacion,fecha);
+        assertTrue(reserva.getCliente() == null);
+        assertTrue(reserva.getHabitacion() == null);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void pruebaClienteNiHabitacionEncontrados(){
+        Long cedula = 123L;
+        Integer numero = 101;
+        String fecha = "2010-05-05";
+        Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
+        Habitacion habitacion = new Habitacion(101,"premium",100000.0);
+        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        when(clienteRepository.findById(any())).thenReturn(Optional.empty());
+        when(habitacionRepository.findById(any())).thenReturn(Optional.empty());
+        Reserva reserva = new Reserva(cliente,habitacion,fecha);
+        assertTrue(reserva.getCliente() == null);
+        assertTrue(reserva.getHabitacion() == null);
+    }
+
     @Test
     public void pruebaReservaHabitacion(){
         Long cedula = 123L;
@@ -73,9 +125,10 @@ public class ReservaServiceTest {
         String fecha = "2023-05-05";
         Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
-        when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
+        when(clienteRepository.findById(cedula)).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
         Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+
         verify(reservaRepository,times(1)).save(any());
     }
 }

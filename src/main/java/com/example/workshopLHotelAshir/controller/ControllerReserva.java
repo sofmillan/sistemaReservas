@@ -30,8 +30,6 @@ public class ControllerReserva {
     }
 
 
-
-
     @GetMapping("/cliente/{cedula}")
     public List<Reserva> getByClient(@PathVariable Long cedula){
         return this.reservaService.getByClient(cedula);
