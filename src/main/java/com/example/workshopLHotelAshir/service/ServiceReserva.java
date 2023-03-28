@@ -41,31 +41,22 @@ public class ServiceReserva {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             LocalDate date = LocalDate.parse(fecha, formatter);
-            Habitacion hab1 = habitacion.get();
-            List<Integer> disponiblesId = this.reservaRepository.getAvailability(fecha);
-            if(disponiblesId.contains(hab1.getNumero())){
+            Habitacion habitacion1 = habitacion.get();
                 if(date.isBefore(LocalDate.now())){
                     throw new RuntimeException("La fecha no puede ser anterior a la actual");
                 }
-                double descuento =0;
-                Reserva reserva = new Reserva(cliente.get(),habitacion.get(),date);
-                if(hab1.getTipoHabitacion().equalsIgnoreCase("premium")){
-                    descuento = hab1.getPrecioBase() * 0.05;
+                double descuento = 0;
+                Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
+                if(habitacion1.getTipoHabitacion().equalsIgnoreCase("premium")){
+                    descuento = habitacion1.getPrecioBase() * 0.05;
                 }
-                reserva.setTotal(hab1.getPrecioBase()-descuento);
+                reserva.setTotal(habitacion1.getPrecioBase() - descuento);
                 this.reservaRepository.save(reserva);
 
-                Confirmacion confirmacion = new Confirmacion(reserva.getCodigo(),reserva.getFechaReserva(),
-                        reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
+                Confirmacion confirmacion = new Confirmacion(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
                 return confirmacion;
-            }else{
-                throw new RuntimeException("Habitación no disponible");
-            }
-
         }
-
-
-        return new Confirmacion();
+            throw new RuntimeException("Datos no encontrados");
     }
 
 

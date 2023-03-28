@@ -5,6 +5,8 @@ import com.example.workshopLHotelAshir.repository.RepositoryCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class ServiceCliente {
 
@@ -17,7 +19,6 @@ public class ServiceCliente {
 
     public Cliente crear(Cliente cliente){
         if(cliente.getApellido()==null||cliente.getNombre()==null){
-
             throw new RuntimeException(("Nombre y apellido no pueden ser nulos"));
         }
         this.repositoryCliente.save(cliente);

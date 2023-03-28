@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Confirmacion {
 
     private UUID numReserva;
-    private LocalDate fecha;
+    private String fecha;
     private Integer numHabitacion;
     private String nombre;
     private Double total;
@@ -17,7 +17,7 @@ public class Confirmacion {
 
     }
 
-    public Confirmacion(UUID numReserva, LocalDate fecha, Integer numHabitacion, String nombre, Double total) {
+    public Confirmacion(UUID numReserva, String fecha, Integer numHabitacion, String nombre, Double total) {
         this.numReserva = numReserva;
         this.fecha = fecha;
         this.numHabitacion = numHabitacion;
@@ -29,7 +29,7 @@ public class Confirmacion {
         return numReserva;
     }
 
-    public LocalDate getFecha() {
+    public String getFecha() {
         return fecha;
     }
 

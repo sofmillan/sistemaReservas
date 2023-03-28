@@ -10,7 +10,7 @@ public class Reserva {
     @GeneratedValue()
     private UUID codigo;
     @Column(name="fechaReserva")
-    private LocalDate fechaReserva;
+    private String fechaReserva;
 
     @ManyToOne
     @JoinColumn(name="cedula")
@@ -25,7 +25,7 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva( Cliente cliente, Habitacion habitacion,LocalDate fechaReserva) {
+    public Reserva( Cliente cliente, Habitacion habitacion,String fechaReserva) {
         this.codigo = UUID.randomUUID();
         this.fechaReserva = fechaReserva;
         this.cliente = cliente;
@@ -37,7 +37,7 @@ public class Reserva {
         return codigo;
     }
 
-    public LocalDate getFechaReserva() {
+    public String getFechaReserva() {
         return fechaReserva;
     }
 
