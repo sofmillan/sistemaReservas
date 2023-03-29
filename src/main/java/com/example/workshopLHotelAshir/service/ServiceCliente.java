@@ -1,5 +1,6 @@
 package com.example.workshopLHotelAshir.service;
 
+import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.repository.RepositoryCliente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ServiceCliente {
 
     public Cliente crear(Cliente cliente){
         if(cliente.getApellido()==null||cliente.getNombre()==null){
-            throw new RuntimeException(("Nombre y apellido no pueden ser nulos"));
+            throw new InvalidDataException(("Nombre y apellido no pueden ser nulos"));
         }
         this.repositoryCliente.save(cliente);
         return cliente;

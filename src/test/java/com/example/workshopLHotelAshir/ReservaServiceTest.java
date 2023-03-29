@@ -1,5 +1,9 @@
 package com.example.workshopLHotelAshir;
 
+import com.example.workshopLHotelAshir.exceptions.DataNotFoundException;
+import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
+import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
+import com.example.workshopLHotelAshir.exceptions.InvalidDateException;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
@@ -13,9 +17,6 @@ import org.junit.*;
 
 import java.util.Optional;
 
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 
@@ -34,7 +35,7 @@ public class ReservaServiceTest {
         this.reservaService = new ServiceReserva(habitacionRepository,clienteRepository,reservaRepository);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected= InvalidDataException.class)
     public void pruebaReservaConFechaNula(){
         Long cedula = 123L;
         Integer numero = 101;
@@ -42,7 +43,7 @@ public class ReservaServiceTest {
         Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected=InvalidDataException.class)
     public void pruebaReservaConCedulaNegativa(){
         Long cedula = -123L;
         Integer numero = 101;
@@ -50,14 +51,14 @@ public class ReservaServiceTest {
         Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected=InvalidDataException.class)
     public void pruebaReservaConNumeroHabitacionNegativo(){
         Long cedula = 123L;
         Integer numero = -101;
         String fecha = "2023-05-05";
         Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
-    @Test(expected=RuntimeException.class)
+    @Test(expected= InvalidDateException.class)
     public void pruebaReservaFechaAnteriorActual(){
         Long cedula = 123L;
         Integer numero = 101;
@@ -70,10 +71,21 @@ public class ReservaServiceTest {
         verify(reservaRepository,times(1)).save(any());
     }
 
-  //  @Test(expected=RuntimeException.class)
+    @Test(expected= IncorrectFormatException.class)
+    public void pruebaReservaFechaFormatoIncorrecto(){
+        Long cedula = 123L;
+        Integer numero = 101;
+        String fecha = "5-5-2023";
+        Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
+        Habitacion habitacion = new Habitacion(101,"premium",100000.0);
+        when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
+        when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
+        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        verify(reservaRepository,times(1)).save(any());
+    }
 
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = DataNotFoundException.class)
     public void pruebaHabitacionNoEncontrada(){
         Long cedula = 123L;
         Integer numero = 101;
@@ -88,7 +100,7 @@ public class ReservaServiceTest {
         assertTrue(reserva.getHabitacion() == null);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = DataNotFoundException.class)
     public void pruebaClienteNoEncontrado(){
         Long cedula = 123L;
         Integer numero = 101;
@@ -103,11 +115,11 @@ public class ReservaServiceTest {
         assertTrue(reserva.getHabitacion() == null);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = DataNotFoundException.class)
     public void pruebaClienteNiHabitacionEncontrados(){
         Long cedula = 123L;
         Integer numero = 101;
-        String fecha = "2010-05-05";
+        String fecha = "2023-05-05";
         Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
         Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);

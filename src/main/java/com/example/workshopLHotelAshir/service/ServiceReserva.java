@@ -1,5 +1,9 @@
 package com.example.workshopLHotelAshir.service;
 
+import com.example.workshopLHotelAshir.exceptions.DataNotFoundException;
+import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
+import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
+import com.example.workshopLHotelAshir.exceptions.InvalidDateException;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
@@ -14,6 +18,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ServiceReserva {
@@ -30,19 +36,26 @@ public class ServiceReserva {
 
     public Confirmacion reservar(Long cedula, Integer numero, String fecha){
         if (cedula <= 0 || numero <= 0 || fecha == null){
-            throw new RuntimeException("Los datos no son válidos");
+            throw new InvalidDataException("Los datos no son válidos");
         }
 
         Optional<Cliente> cliente = this.clienteRepository.findById(cedula);
         Optional<Habitacion> habitacion = this.habitacionRepository.findById(numero);
 
         if(cliente.isPresent() && habitacion.isPresent()){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            Pattern pattern = Pattern
+                    .compile("^\\d{4}-\\d{2}-\\d{2}$");
+            Matcher matcher = pattern.matcher(fecha);
 
+            if(!matcher.find()){
+            throw new IncorrectFormatException("La fecha no está en formato válido");
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(fecha, formatter);
             Habitacion habitacion1 = habitacion.get();
                 if(date.isBefore(LocalDate.now())){
-                    throw new RuntimeException("La fecha no puede ser anterior a la actual");
+                    throw new InvalidDateException("La fecha no puede ser anterior a la actual");
                 }
                 double descuento = 0;
                 Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
@@ -54,8 +67,9 @@ public class ServiceReserva {
 
                 Confirmacion confirmacion = new Confirmacion(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
                 return confirmacion;
-        }
-            throw new RuntimeException("Datos no encontrados");
+            }
+
+            throw new DataNotFoundException("Habitación y/o cliente no encontrados");
     }
 
 
