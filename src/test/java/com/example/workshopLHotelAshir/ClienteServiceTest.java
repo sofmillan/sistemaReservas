@@ -1,5 +1,6 @@
 package com.example.workshopLHotelAshir;
 
+import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.repository.RepositoryCliente;
 import com.example.workshopLHotelAshir.repository.RepositoryHabitacion;
@@ -20,14 +21,14 @@ public class ClienteServiceTest {
         this.clienteService = new ServiceCliente(clienteRepository);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected= InvalidDataException.class)
     public void pruebaNombreNulo(){
         Cliente cliente = new Cliente(123L,null,"Millan","Cll 26","17","s@gmail.com");
         Cliente clienteCreado = this.clienteService.crear(cliente);
         verify(clienteRepository, times(1)).save(clienteCreado);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected=InvalidDataException.class)
     public void pruebaApellidoNulo(){
         Cliente cliente = new Cliente(123L,"Sofía",null,"Cll 26","17","s@gmail.com");
         Cliente clienteCreado = this.clienteService.crear(cliente);

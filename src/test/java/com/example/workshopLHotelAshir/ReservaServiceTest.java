@@ -140,7 +140,10 @@ public class ReservaServiceTest {
         when(clienteRepository.findById(cedula)).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
         Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
-
+        Reserva reserva = new Reserva(cliente,habitacion,fecha);
         verify(reservaRepository,times(1)).save(any());
+        assertTrue(reserva.getCliente().getCedula()==123L);
+        assertTrue(reserva.getHabitacion().getNumero()==101);
+        assertTrue(reserva.getFechaReserva()!=null);
     }
 }
