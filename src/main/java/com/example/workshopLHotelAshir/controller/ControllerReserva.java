@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/v1")
@@ -37,7 +38,7 @@ public class ControllerReserva {
     }
 
     @GetMapping("/disponible")
-    public List<Habitacion> getByDate(@RequestParam String fecha){
+    public Set<Habitacion> getByDate(@RequestParam String fecha){
         return this.reservaService.getByDate(fecha);
     }
     @GetMapping("/disponibilidad")

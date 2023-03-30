@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,31 +55,16 @@ public class ServiceReserva {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             LocalDate date = LocalDate.parse(fecha, formatter);
+            if(date.isBefore(LocalDate.now())){
+                throw new InvalidDateException("La fecha no puede ser anterior a la actual");
+            }
+
             List<Integer> disponiblesId = this.reservaRepository.getAvailability(fecha);
-            System.out.println(this.reservaRepository.cantidadReservas());
-            System.out.println(disponiblesId);
+            boolean habitacionDisponible = disponiblesId.contains(numero);
+            boolean noReservas = this.reservaRepository.cantidadReservas()==0;
 
-            if(this.reservaRepository.cantidadReservas()==0){
+            if(noReservas || (disponiblesId.size()!=0 && habitacionDisponible)){
                 Habitacion habitacion1 = habitacion.get();
-                if(date.isBefore(LocalDate.now())){
-                    throw new InvalidDateException("La fecha no puede ser anterior a la actual");
-                }
-                double descuento = 0;
-                Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
-                if(habitacion1.getTipoHabitacion().equalsIgnoreCase("premium")){
-                    descuento = habitacion1.getPrecioBase() * 0.05;
-                }
-                reserva.setTotal(habitacion1.getPrecioBase() - descuento);
-                this.reservaRepository.save(reserva);
-
-                return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
-
-            }
-            if(disponiblesId.size()!=0 && disponiblesId.contains(numero)){
-                Habitacion habitacion1 = habitacion.get();
-                if(date.isBefore(LocalDate.now())){
-                    throw new InvalidDateException("La fecha no puede ser anterior a la actual");
-                }
                 double descuento = 0;
                 Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
                 if(habitacion1.getTipoHabitacion().equalsIgnoreCase("premium")){
@@ -87,12 +73,7 @@ public class ServiceReserva {
                 reserva.setTotal(habitacion1.getPrecioBase() - descuento);
                 this.reservaRepository.save(reserva);
                 return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
-            }
-            if(disponiblesId.size()!=0 && !disponiblesId.contains(numero)){
-                throw new IllegalArgumentException("Hab ya reservada");
-            }
-
-            if(disponiblesId.size()==0){
+            }else{
                 throw new IllegalArgumentException("Hab ya reservada");
             }
         }
@@ -107,7 +88,7 @@ public class ServiceReserva {
         return this.reservaRepository.findAllById(cedula);
     }
 
-    public List<Habitacion> getByDate(String date) {
+    public Set<Habitacion> getByDate(String date) {
         return this.reservaRepository.findByDate(date);
     }
 
