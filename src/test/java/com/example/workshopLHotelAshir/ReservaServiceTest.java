@@ -6,7 +6,6 @@ import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDateException;
 import com.example.workshopLHotelAshir.model.Cliente;
-import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
 import com.example.workshopLHotelAshir.repository.RepositoryCliente;

@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +39,7 @@ public class ServiceReserva {
         Optional<Habitacion> habitacion = this.habitacionRepository.findById(numero);
 
         if(cliente.isPresent() && habitacion.isPresent()){
+
             Pattern pattern = Pattern
                     .compile("^\\d{4}-\\d{2}-\\d{2}$");
             Matcher matcher = pattern.matcher(fecha);
@@ -52,6 +51,7 @@ public class ServiceReserva {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             LocalDate date = LocalDate.parse(fecha, formatter);
+
             if(date.isBefore(LocalDate.now())){
                 throw new InvalidDateException("La fecha no puede ser anterior a la actual");
             }
@@ -69,7 +69,7 @@ public class ServiceReserva {
                 }
                 reserva.setTotal(habitacion1.getPrecioBase() - descuento);
                 this.reservaRepository.save(reserva);
-                return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
+                return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(),reserva.getTotal());
             }else{
                 throw new BookedRoomException("La habitación ya esta reservada");
             }

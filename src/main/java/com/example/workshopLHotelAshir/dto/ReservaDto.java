@@ -1,38 +1,32 @@
 package com.example.workshopLHotelAshir.dto;
 
 
-import com.example.workshopLHotelAshir.model.Cliente;
-import com.example.workshopLHotelAshir.model.Habitacion;
-
 import java.util.UUID;
     public class ReservaDto {
-        private UUID numReserva;
+        private UUID numeroReserva;
         private String fecha;
-        private Integer numHabitacion;
-        private String nombre;
+        private Integer numeroHabitacion;
+
         private Double total;
 
         public ReservaDto(){
         }
-        public ReservaDto(UUID numReserva, String fecha, Integer numHabitacion, String nombre, Double total) {
-            this.numReserva = numReserva;
+        public ReservaDto(UUID numeroReserva, String fecha, Integer numeroHabitacion, Double total) {
+            this.numeroReserva = numeroReserva;
             this.fecha = fecha;
-            this.numHabitacion = numHabitacion;
-            this.nombre = nombre;
+            this.numeroHabitacion = numeroHabitacion;
             this.total = total;
         }
-        public UUID getNumReserva() {
-            return numReserva;
+        public UUID getNumeroReserva() {
+            return numeroReserva;
         }
         public String getFecha() {
             return fecha;
         }
-        public Integer getNumHabitacion() {
-            return numHabitacion;
+        public Integer getNumeroHabitacion() {
+            return numeroHabitacion;
         }
-        public String getNombre() {
-            return nombre;
-        }
+
         public Double getTotal() {
             return total;
         }

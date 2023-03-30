@@ -1,7 +1,6 @@
 package com.example.workshopLHotelAshir.controller;
 
 import com.example.workshopLHotelAshir.dto.ReservaDto;
-import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
 import com.example.workshopLHotelAshir.service.ServiceReserva;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -37,11 +35,11 @@ public class ControllerReserva {
         return this.reservaService.getByClient(cedula);
     }
 
-    @GetMapping("/disponible")
+    @GetMapping("/disponible-fecha")
     public Set<Habitacion> getByDate(@RequestParam String fecha){
         return this.reservaService.getByDate(fecha);
     }
-    @GetMapping("/disponibilidad")
+    @GetMapping("/disponible-fecha-tipo")
     public List<Habitacion> getByDateType(@RequestParam String fecha, @RequestParam String tipo){
         return this.reservaService.getByDateType(fecha,tipo);
     }
