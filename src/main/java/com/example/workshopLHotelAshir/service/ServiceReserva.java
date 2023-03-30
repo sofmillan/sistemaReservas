@@ -1,10 +1,7 @@
 package com.example.workshopLHotelAshir.service;
 
 import com.example.workshopLHotelAshir.dto.ReservaDto;
-import com.example.workshopLHotelAshir.exceptions.DataNotFoundException;
-import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
-import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
-import com.example.workshopLHotelAshir.exceptions.InvalidDateException;
+import com.example.workshopLHotelAshir.exceptions.*;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
@@ -74,10 +71,9 @@ public class ServiceReserva {
                 this.reservaRepository.save(reserva);
                 return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
             }else{
-                throw new IllegalArgumentException("Hab ya reservada");
+                throw new BookedRoomException("La habitación ya esta reservada");
             }
         }
-
         throw new DataNotFoundException("Habitación y/o cliente no encontrados");
     }
 
