@@ -6,7 +6,6 @@ import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDateException;
 import com.example.workshopLHotelAshir.model.Cliente;
-import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
 import com.example.workshopLHotelAshir.repository.RepositoryCliente;
@@ -49,14 +48,18 @@ public class ServiceReserva {
             Matcher matcher = pattern.matcher(fecha);
 
             if(!matcher.find()){
-            throw new IncorrectFormatException("La fecha no está en formato válido");
+                throw new IncorrectFormatException("La fecha no está en formato válido");
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             LocalDate date = LocalDate.parse(fecha, formatter);
+            List<Integer> disponiblesId = this.reservaRepository.getAvailability(fecha);
+            System.out.println(this.reservaRepository.cantidadReservas());
+            System.out.println(disponiblesId);
 
-            Habitacion habitacion1 = habitacion.get();
+            if(this.reservaRepository.cantidadReservas()==0){
+                Habitacion habitacion1 = habitacion.get();
                 if(date.isBefore(LocalDate.now())){
                     throw new InvalidDateException("La fecha no puede ser anterior a la actual");
                 }
@@ -68,12 +71,35 @@ public class ServiceReserva {
                 reserva.setTotal(habitacion1.getPrecioBase() - descuento);
                 this.reservaRepository.save(reserva);
 
-                ReservaDto reservaConfirmada = new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
-                return reservaConfirmada;
+                return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
+
+            }
+            if(disponiblesId.size()!=0 && disponiblesId.contains(numero)){
+                Habitacion habitacion1 = habitacion.get();
+                if(date.isBefore(LocalDate.now())){
+                    throw new InvalidDateException("La fecha no puede ser anterior a la actual");
+                }
+                double descuento = 0;
+                Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
+                if(habitacion1.getTipoHabitacion().equalsIgnoreCase("premium")){
+                    descuento = habitacion1.getPrecioBase() * 0.05;
+                }
+                reserva.setTotal(habitacion1.getPrecioBase() - descuento);
+                this.reservaRepository.save(reserva);
+                return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
+            }
+            if(disponiblesId.size()!=0 && !disponiblesId.contains(numero)){
+                throw new IllegalArgumentException("Hab ya reservada");
             }
 
-            throw new DataNotFoundException("Habitación y/o cliente no encontrados");
+            if(disponiblesId.size()==0){
+                throw new IllegalArgumentException("Hab ya reservada");
+            }
+        }
+
+        throw new DataNotFoundException("Habitación y/o cliente no encontrados");
     }
+
 
 
 

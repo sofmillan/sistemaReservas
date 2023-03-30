@@ -28,5 +28,8 @@ public interface RepositoryReserva extends CrudRepository<Reserva, UUID> {
     @Query("Select h.numero FROM Habitacion h, Reserva r WHERE h.numero not in(SELECT habitacion.numero from Reserva) " +
             "OR h.numero not in(select distinct r.habitacion.numero from  Reserva r where r.fechaReserva= ?1)")
     public List<Integer> getAvailability(String fecha);
+
+    @Query("select count(*) from Reserva")
+    public Integer cantidadReservas();
 }
 
