@@ -1,5 +1,6 @@
 package com.example.workshopLHotelAshir.controller;
 
+import com.example.workshopLHotelAshir.dto.ReservaDto;
 import com.example.workshopLHotelAshir.model.Confirmacion;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
@@ -22,11 +23,11 @@ public class ControllerReserva {
     }
 
     @PostMapping("/cliente/{cedula}/habitacion/{numero}/fecha/{fechaReserva}/reservar")
-    public ResponseEntity<Confirmacion> add(@PathVariable ("cedula") Long cedula,
+    public ResponseEntity<ReservaDto> add(@PathVariable ("cedula") Long cedula,
                                             @PathVariable ("numero") Integer numero,
                                             @PathVariable ("fechaReserva") String fechaReserva){
-        Confirmacion confirmacion1 = reservaService.reservar(cedula, numero, fechaReserva);
-        return ResponseEntity.ok(confirmacion1);
+        ReservaDto confirmacion = reservaService.reservar(cedula, numero, fechaReserva);
+        return ResponseEntity.ok(confirmacion);
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.workshopLHotelAshir.service;
 
+import com.example.workshopLHotelAshir.dto.ReservaDto;
 import com.example.workshopLHotelAshir.exceptions.DataNotFoundException;
 import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
@@ -34,7 +35,7 @@ public class ServiceReserva {
         this.reservaRepository = reservaRepository;
     }
 
-    public Confirmacion reservar(Long cedula, Integer numero, String fecha){
+    public ReservaDto reservar(Long cedula, Integer numero, String fecha){
         if (cedula <= 0 || numero <= 0 || fecha == null){
             throw new InvalidDataException("Los datos no son válidos");
         }
@@ -52,7 +53,9 @@ public class ServiceReserva {
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
             LocalDate date = LocalDate.parse(fecha, formatter);
+
             Habitacion habitacion1 = habitacion.get();
                 if(date.isBefore(LocalDate.now())){
                     throw new InvalidDateException("La fecha no puede ser anterior a la actual");
@@ -65,8 +68,8 @@ public class ServiceReserva {
                 reserva.setTotal(habitacion1.getPrecioBase() - descuento);
                 this.reservaRepository.save(reserva);
 
-                Confirmacion confirmacion = new Confirmacion(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
-                return confirmacion;
+                ReservaDto reservaConfirmada = new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(), reserva.getCliente().getNombre(),reserva.getTotal());
+                return reservaConfirmada;
             }
 
             throw new DataNotFoundException("Habitación y/o cliente no encontrados");

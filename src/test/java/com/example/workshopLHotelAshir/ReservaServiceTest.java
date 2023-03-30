@@ -1,5 +1,6 @@
 package com.example.workshopLHotelAshir;
 
+import com.example.workshopLHotelAshir.dto.ReservaDto;
 import com.example.workshopLHotelAshir.exceptions.DataNotFoundException;
 import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
@@ -40,7 +41,7 @@ public class ReservaServiceTest {
         Long cedula = 123L;
         Integer numero = 101;
         String fecha = null;
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
 
     @Test(expected=InvalidDataException.class)
@@ -48,7 +49,7 @@ public class ReservaServiceTest {
         Long cedula = -123L;
         Integer numero = 101;
         String fecha = "2023-05-05";
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
 
     @Test(expected=InvalidDataException.class)
@@ -56,7 +57,7 @@ public class ReservaServiceTest {
         Long cedula = 123L;
         Integer numero = -101;
         String fecha = "2023-05-05";
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
     @Test(expected= InvalidDateException.class)
     public void pruebaReservaFechaAnteriorActual(){
@@ -67,7 +68,7 @@ public class ReservaServiceTest {
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
         when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
         verify(reservaRepository,times(1)).save(any());
     }
 
@@ -80,7 +81,7 @@ public class ReservaServiceTest {
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
         when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
         verify(reservaRepository,times(1)).save(any());
     }
 
@@ -92,7 +93,7 @@ public class ReservaServiceTest {
         String fecha = "2010-05-05";
         Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
         when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(any())).thenReturn(Optional.empty());
         Reserva reserva = new Reserva(cliente,habitacion,fecha);
@@ -107,7 +108,7 @@ public class ReservaServiceTest {
         String fecha = "2010-05-05";
         Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
         when(clienteRepository.findById(any())).thenReturn(Optional.empty());
         when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
         Reserva reserva = new Reserva(cliente,habitacion,fecha);
@@ -122,7 +123,7 @@ public class ReservaServiceTest {
         String fecha = "2023-05-05";
         Cliente cliente = new Cliente(123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
         when(clienteRepository.findById(any())).thenReturn(Optional.empty());
         when(habitacionRepository.findById(any())).thenReturn(Optional.empty());
         Reserva reserva = new Reserva(cliente,habitacion,fecha);
@@ -139,7 +140,7 @@ public class ReservaServiceTest {
         Habitacion habitacion = new Habitacion(101,"premium",100000.0);
         when(clienteRepository.findById(cedula)).thenReturn(Optional.of(cliente));
         when(habitacionRepository.findById(any())).thenReturn(Optional.of(habitacion));
-        Confirmacion confirmacion = this.reservaService.reservar(cedula,numero,fecha);
+        ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
         Reserva reserva = new Reserva(cliente,habitacion,fecha);
         verify(reservaRepository,times(1)).save(any());
         assertTrue(reserva.getCliente().getCedula()==123L);
