@@ -2,9 +2,7 @@ package com.example.workshopLHotelAshir;
 
 import com.example.workshopLHotelAshir.dto.ReservaDto;
 import com.example.workshopLHotelAshir.exceptions.DataNotFoundException;
-import com.example.workshopLHotelAshir.exceptions.IncorrectFormatException;
 import com.example.workshopLHotelAshir.exceptions.InvalidDataException;
-import com.example.workshopLHotelAshir.exceptions.InvalidDateException;
 import com.example.workshopLHotelAshir.model.Cliente;
 import com.example.workshopLHotelAshir.model.Habitacion;
 import com.example.workshopLHotelAshir.model.Reserva;
@@ -58,7 +56,7 @@ public class ReservaServiceTest {
         String fecha = "2023-05-05";
         ReservaDto confirmacion = this.reservaService.reservar(cedula,numero,fecha);
     }
-    @Test(expected= InvalidDateException.class)
+    @Test(expected= InvalidDataException.class)
     public void pruebaReservaFechaAnteriorActual(){
         Long cedula = 123L;
         Integer numero = 101;
@@ -71,7 +69,7 @@ public class ReservaServiceTest {
         verify(reservaRepository,times(1)).save(any());
     }
 
-    @Test(expected= IncorrectFormatException.class)
+    @Test(expected= InvalidDataException.class)
     public void pruebaReservaFechaFormatoIncorrecto(){
         Long cedula = 123L;
         Integer numero = 101;

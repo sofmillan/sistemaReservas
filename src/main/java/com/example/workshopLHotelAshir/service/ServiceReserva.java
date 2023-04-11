@@ -45,7 +45,7 @@ public class ServiceReserva {
             Matcher matcher = pattern.matcher(fecha);
 
             if(!matcher.find()){
-                throw new IncorrectFormatException("La fecha no está en formato válido");
+                throw new InvalidDataException("La fecha no está en formato válido");
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -53,7 +53,7 @@ public class ServiceReserva {
             LocalDate date = LocalDate.parse(fecha, formatter);
 
             if(date.isBefore(LocalDate.now())){
-                throw new InvalidDateException("La fecha no puede ser anterior a la actual");
+                throw new InvalidDataException("La fecha no puede ser anterior a la actual");
             }
 
             List<Integer> disponiblesId = this.reservaRepository.getAvailability(fecha);
