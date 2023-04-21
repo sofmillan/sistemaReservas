@@ -1,7 +1,7 @@
 package com.example.workshopLHotelAshir.controller;
 
-import com.example.workshopLHotelAshir.model.Cliente;
-import com.example.workshopLHotelAshir.service.ServiceCliente;
+import com.example.workshopLHotelAshir.model.Client;
+import com.example.workshopLHotelAshir.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class ControllerCliente {
+public class ClientController {
 
-    private ServiceCliente serviceCliente;
+    private ClientService clientService;
 
     @Autowired
-    public ControllerCliente(ServiceCliente serviceCliente) {
-        this.serviceCliente = serviceCliente;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @PostMapping("/cliente")
-    public ResponseEntity<Cliente> crear(@RequestBody Cliente cliente){
-        Cliente cliente1 = serviceCliente.crear(cliente);
-        return ResponseEntity.ok(cliente1);
+    public ResponseEntity<Client> crear(@RequestBody Client client){
+        Client client1 = clientService.crear(client);
+        return ResponseEntity.ok(client1);
     }
 }

@@ -2,16 +2,16 @@ package com.example.workshopLHotelAshir.dto;
 
 
 import java.util.UUID;
-    public class ReservaDto {
+    public class BookingDTO {
         private UUID numeroReserva;
         private String fecha;
         private Integer numeroHabitacion;
 
         private Double total;
 
-        public ReservaDto(){
+        public BookingDTO(){
         }
-        public ReservaDto(UUID numeroReserva, String fecha, Integer numeroHabitacion, Double total) {
+        public BookingDTO(UUID numeroReserva, String fecha, Integer numeroHabitacion, Double total) {
             this.numeroReserva = numeroReserva;
             this.fecha = fecha;
             this.numeroHabitacion = numeroHabitacion;

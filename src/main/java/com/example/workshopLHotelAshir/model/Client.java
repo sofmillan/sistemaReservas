@@ -1,11 +1,10 @@
 package com.example.workshopLHotelAshir.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente {
+public class Client {
 
     @Id
     @Column(name = "cedula")
@@ -23,11 +22,11 @@ public class Cliente {
     @Column(name = "correoElectronico")
     private String correoElectronico;
 
-    public Cliente() {
+    public Client() {
     }
 
-    public Cliente(Long cedula, String nombre, String apellido,
-                   String direccion, String edad, String correoElectronico) {
+    public Client(Long cedula, String nombre, String apellido,
+                  String direccion, String edad, String correoElectronico) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;

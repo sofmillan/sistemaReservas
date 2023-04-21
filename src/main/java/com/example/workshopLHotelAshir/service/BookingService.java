@@ -1,13 +1,13 @@
 package com.example.workshopLHotelAshir.service;
 
-import com.example.workshopLHotelAshir.dto.ReservaDto;
+import com.example.workshopLHotelAshir.dto.BookingDTO;
 import com.example.workshopLHotelAshir.exceptions.*;
-import com.example.workshopLHotelAshir.model.Cliente;
-import com.example.workshopLHotelAshir.model.Habitacion;
-import com.example.workshopLHotelAshir.model.Reserva;
-import com.example.workshopLHotelAshir.repository.RepositoryCliente;
-import com.example.workshopLHotelAshir.repository.RepositoryHabitacion;
-import com.example.workshopLHotelAshir.repository.RepositoryReserva;
+import com.example.workshopLHotelAshir.model.Client;
+import com.example.workshopLHotelAshir.model.Room;
+import com.example.workshopLHotelAshir.model.Booking;
+import com.example.workshopLHotelAshir.repository.ClientRepository;
+import com.example.workshopLHotelAshir.repository.RoomRepository;
+import com.example.workshopLHotelAshir.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +18,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class ServiceReserva {
-    private RepositoryHabitacion habitacionRepository;
-    private RepositoryCliente clienteRepository;
-    private RepositoryReserva reservaRepository;
+public class BookingService {
+    private RoomRepository habitacionRepository;
+    private ClientRepository clienteRepository;
+    private BookingRepository reservaRepository;
 
     @Autowired
-    public ServiceReserva(RepositoryHabitacion habitacionRepository, RepositoryCliente clienteRepository, RepositoryReserva reservaRepository) {
+    public BookingService(RoomRepository habitacionRepository, ClientRepository clienteRepository, BookingRepository reservaRepository) {
         this.habitacionRepository = habitacionRepository;
         this.clienteRepository = clienteRepository;
         this.reservaRepository = reservaRepository;
     }
 
-    public ReservaDto reservar(Long cedula, Integer numero, String fecha){
+    public BookingDTO reservar(Long cedula, Integer numero, String fecha){
         if (cedula <= 0 || numero <= 0 || fecha == null){
             throw new InvalidDataException("Los datos no son válidos");
         }
 
-        Optional<Cliente> cliente = this.clienteRepository.findById(cedula);
-        Optional<Habitacion> habitacion = this.habitacionRepository.findById(numero);
+        Optional<Client> cliente = this.clienteRepository.findById(cedula);
+        Optional<Room> habitacion = this.habitacionRepository.findById(numero);
 
         if(cliente.isPresent() && habitacion.isPresent()){
 
@@ -61,15 +61,15 @@ public class ServiceReserva {
             boolean noReservas = this.reservaRepository.cantidadReservas()==0;
 
             if(noReservas || (disponiblesId.size()!=0 && habitacionDisponible)){
-                Habitacion habitacion1 = habitacion.get();
+                Room room1 = habitacion.get();
                 double descuento = 0;
-                Reserva reserva = new Reserva(cliente.get(),habitacion.get(),fecha);
-                if(habitacion1.getTipoHabitacion().equalsIgnoreCase("premium")){
-                    descuento = habitacion1.getPrecioBase() * 0.05;
+                Booking booking = new Booking(cliente.get(),habitacion.get(),fecha);
+                if(room1.getTipoHabitacion().equalsIgnoreCase("premium")){
+                    descuento = room1.getPrecioBase() * 0.05;
                 }
-                reserva.setTotal(habitacion1.getPrecioBase() - descuento);
-                this.reservaRepository.save(reserva);
-                return new ReservaDto(reserva.getCodigo(),reserva.getFechaReserva(), reserva.getHabitacion().getNumero(),reserva.getTotal());
+                booking.setTotal(room1.getPrecioBase() - descuento);
+                this.reservaRepository.save(booking);
+                return new BookingDTO(booking.getCodigo(), booking.getFechaReserva(), booking.getHabitacion().getNumero(), booking.getTotal());
             }else{
                 throw new BookedRoomException("La habitación ya esta reservada");
             }
@@ -80,15 +80,15 @@ public class ServiceReserva {
 
 
 
-    public List<Reserva> getByClient(Long cedula){
+    public List<Booking> getByClient(Long cedula){
         return this.reservaRepository.findAllById(cedula);
     }
 
-    public Set<Habitacion> getByDate(String date) {
+    public Set<Room> getByDate(String date) {
         return this.reservaRepository.findByDate(date);
     }
 
-    public List<Habitacion> getByDateType(String date, String tipo){
+    public List<Room> getByDateType(String date, String tipo){
         return this.reservaRepository.findByDateType(date, tipo);
     }
 }

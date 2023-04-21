@@ -1,9 +1,8 @@
 package com.example.workshopLHotelAshir.repository;
-
-import com.example.workshopLHotelAshir.model.Habitacion;
+import com.example.workshopLHotelAshir.model.Client;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepositoryHabitacion extends CrudRepository<Habitacion, Integer> {
+public interface ClientRepository extends CrudRepository<Client, Long> {
 }

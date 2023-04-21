@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="habitacion")
-public class Habitacion {
+public class Room {
 
     @Id
     @Column(name="numero")
@@ -19,9 +19,9 @@ public class Habitacion {
     @Column(name="precioBase")
     private Double precioBase;
 
-    public Habitacion(){}
+    public Room(){}
 
-    public Habitacion(Integer numero, String tipoHabitacion, Double precioBase) {
+    public Room(Integer numero, String tipoHabitacion, Double precioBase) {
         this.numero = numero;
         this.tipoHabitacion = tipoHabitacion;
         this.precioBase = precioBase;

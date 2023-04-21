@@ -1,36 +1,34 @@
 package com.example.workshopLHotelAshir.model;
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name="reserva")
-public class Reserva {
+public class Booking {
     @Id
-    @GeneratedValue()
+    @Column(name="codigo")
     private UUID codigo;
     @Column(name="fechaReserva")
     private String fechaReserva;
 
     @ManyToOne
     @JoinColumn(name="cedula")
-    private Cliente cliente;
+    private Client client;
     @ManyToOne
     @JoinColumn(name="numero")
-    private Habitacion habitacion;
+    private Room room;
 
     @Column(name="total")
     private Double total;
 
-    public Reserva() {
+    public Booking() {
     }
 
-    public Reserva( Cliente cliente, Habitacion habitacion,String fechaReserva) {
+    public Booking(Client client, Room room, String fechaReserva) {
         this.codigo = UUID.randomUUID();
         this.fechaReserva = fechaReserva;
-        this.cliente = cliente;
-        this.habitacion = habitacion;
-        this.total = total;
+        this.client = client;
+        this.room = room;
     }
 
     public UUID getCodigo() {
@@ -41,12 +39,12 @@ public class Reserva {
         return fechaReserva;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Client getCliente() {
+        return client;
     }
 
-    public Habitacion getHabitacion() {
-        return habitacion;
+    public Room getHabitacion() {
+        return room;
     }
 
     public Double getTotal() {

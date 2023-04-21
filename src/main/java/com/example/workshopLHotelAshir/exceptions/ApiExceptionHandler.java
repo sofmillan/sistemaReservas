@@ -14,10 +14,10 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException e){
         ApiException apiException= new ApiException(
                 e.getMessage(),
-                HttpStatus.NOT_FOUND,
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value={InvalidDataException.class})
@@ -34,9 +34,9 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleBookedRoomException(BookedRoomException e){
         ApiException apiException= new ApiException(
                 e.getMessage(),
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.CONFLICT,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiException, HttpStatus.CONFLICT);
     }
 }
