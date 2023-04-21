@@ -39,4 +39,13 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(value={DataAlreadyExistsException.class})
+    public ResponseEntity<Object> handleDataAlreadyExistsException(DataAlreadyExistsException e){
+        ApiException apiException= new ApiException(
+                e.getMessage(),
+                HttpStatus.CONFLICT,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, HttpStatus.CONFLICT);
+    }
 }

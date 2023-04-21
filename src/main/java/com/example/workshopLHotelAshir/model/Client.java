@@ -7,56 +7,54 @@ import javax.persistence.*;
 public class Client {
 
     @Id
-    @Column(name = "cedula")
-    private Long cedula;
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "apellido")
-    private String apellido;
+    @Column(name = "clientId")
+    private Long clientId;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "lastName")
+    private String lastName;
 
-    @Column(name = "direccion")
-    private String direccion;
-    @Column(name = "edad")
-    private String edad;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "age")
+    private String age;
 
-    @Column(name = "correoElectronico")
-    private String correoElectronico;
+    @Column(name = "email")
+    private String email;
 
     public Client() {
     }
 
-    public Client(Long cedula, String nombre, String apellido,
-                  String direccion, String edad, String correoElectronico) {
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.direccion = direccion;
-        this.edad = edad;
-        this.correoElectronico = correoElectronico;
+    public Client(Long clientId, String name, String lastName, String address, String age, String email) {
+        this.clientId = clientId;
+        this.name = name;
+        this.lastName = lastName;
+        this.address = address;
+        this.age = age;
+        this.email = email;
     }
 
-    public Long getCedula() {
-        return cedula;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getAddress() {
+        return address;
     }
 
-    public String getEdad() {
-        return edad;
+    public String getAge() {
+        return age;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getEmail() {
+        return email;
     }
-
 }

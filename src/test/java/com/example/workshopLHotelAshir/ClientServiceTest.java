@@ -21,20 +21,20 @@ public class ClientServiceTest {
     @Test(expected= InvalidDataException.class)
     public void pruebaNombreNulo(){
         Client client = new Client(123L,null,"Millan","Cll 26","17","s@gmail.com");
-        Client clientCreado = this.clienteService.crear(client);
+        Client clientCreado = this.clienteService.addClient(client);
         verify(clienteRepository, times(1)).save(clientCreado);
     }
 
     @Test(expected=InvalidDataException.class)
     public void pruebaApellidoNulo(){
         Client client = new Client(123L,"Sofía",null,"Cll 26","17","s@gmail.com");
-        Client clientCreado = this.clienteService.crear(client);
+        Client clientCreado = this.clienteService.addClient(client);
         verify(clienteRepository, times(1)).save(clientCreado);
     }
     @Test
     public void pruebaDatosCompletos(){
         Client client = new Client(123L,"Sofía","Millán","Cll 26","17","s@gmail.com");
-        Client clientCreado = this.clienteService.crear(client);
+        Client clientCreado = this.clienteService.addClient(client);
         verify(clienteRepository, times(1)).save(clientCreado);
     }
 }

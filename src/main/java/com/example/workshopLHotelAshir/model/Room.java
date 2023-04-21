@@ -6,36 +6,36 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="habitacion")
+@Table(name="rooms")
 public class Room {
 
     @Id
-    @Column(name="numero")
-    private Integer numero;
+    @Column(name="bookNumber")
+    private Integer bookNumber;
 
-    @Column(name="tipoHabitacion")
-    private String tipoHabitacion;
+    @Column(name="type")
+    private String type;
 
-    @Column(name="precioBase")
-    private Double precioBase;
+    @Column(name="basePrice")
+    private Double basePrice;
 
     public Room(){}
 
-    public Room(Integer numero, String tipoHabitacion, Double precioBase) {
-        this.numero = numero;
-        this.tipoHabitacion = tipoHabitacion;
-        this.precioBase = precioBase;
+    public Room(Integer bookNumber, String type, Double basePrice) {
+        this.bookNumber = bookNumber;
+        this.type = type;
+        this.basePrice = basePrice;
     }
 
-    public Integer getNumero() {
-        return numero;
+    public Integer getBookNumber() {
+        return bookNumber;
     }
 
-    public String getTipoHabitacion() {
-        return tipoHabitacion;
+    public String getType() {
+        return type;
     }
 
-    public Double getPrecioBase() {
-        return precioBase;
+    public Double getBasePrice() {
+        return basePrice;
     }
 }

@@ -2,6 +2,9 @@ package com.example.workshopLHotelAshir.controller;
 
 import com.example.workshopLHotelAshir.model.Client;
 import com.example.workshopLHotelAshir.service.ClientService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +23,14 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @PostMapping("/cliente")
-    public ResponseEntity<Client> crear(@RequestBody Client client){
-        Client client1 = clientService.crear(client);
-        return ResponseEntity.ok(client1);
+    @ApiOperation(value = "Create a new client")
+    @ApiResponses( value= {
+            @ApiResponse(code = 200, message = "Client created successfully"),
+            @ApiResponse(code = 409, message = "Client already exists, check the id")
+    })
+    @PostMapping("/client")
+    public ResponseEntity<Client> addClient(@RequestBody Client client){
+        Client createdClient = clientService.addClient(client);
+        return ResponseEntity.ok(createdClient);
     }
 }
