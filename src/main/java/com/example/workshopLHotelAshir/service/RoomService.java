@@ -17,13 +17,14 @@ public class RoomService {
     }
 
     public Room registerRoom(Room room){
+        if(room.getRoomNumber()==null){
+            throw new InvalidDataException("The book number cannot be null");
+        }
         Optional<Room> optionalRoom = roomRepository.findById(room.getRoomNumber());
         if(optionalRoom.isPresent()){
             throw new DataAlreadyExistsException("The room "+room.getRoomNumber()+" is registered already.");
         }
-        if(room.getRoomNumber()==null){
-            throw new InvalidDataException("The book number cannot be null");
-        }
+
         if(room.getRoomNumber()<0){
             throw new InvalidDataException("Room number cannot be negative");
         }

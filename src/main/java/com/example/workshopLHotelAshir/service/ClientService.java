@@ -19,13 +19,15 @@ public class ClientService {
     }
 
     public Client addClient(Client client){
+        if(client.getClientId()==null){
+            throw new InvalidDataException("Id cannot be null");
+        }
+
         Optional<Client> optionalClient = this.clientRepository.findById(client.getClientId());
         if(optionalClient.isPresent()){
             throw new DataAlreadyExistsException("Client with id "+client.getClientId()+" already exists.");
         }
-        if(client.getClientId()==null){
-            throw new InvalidDataException("Id cannot be null");
-        }
+
         if(client.getClientId()<0){
             throw new InvalidDataException("Id cannot be negative");
         }
