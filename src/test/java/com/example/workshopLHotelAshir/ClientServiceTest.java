@@ -21,14 +21,14 @@ public class ClientServiceTest {
 
     @Test(expected= InvalidDataException.class)
     public void Should_ThrowException_When_IdIsNull(){
-        Client client = new Client(null,"Sofia","Millan","Cll 26","17","s@gmail.com");
+        Client client = new Client(null,"Sofia","Millan","Cll 29","17","s@gmail.com");
         Client clientCreado = this.clientService.addClient(client);
         verify(clientRepository, times(1)).save(client);
     }
 
     @Test(expected= InvalidDataException.class)
     public void Should_ThrowException_When_NegativeId(){
-        Client client = new Client(-123L,"Sofia","Millan","Cll 26","17","s@gmail.com");
+        Client client = new Client(-123L,"Sofia","Millan","Cll 29","17","s@gmail.com");
         Client clientCreado = this.clientService.addClient(client);
         verify(clientRepository, times(1)).save(client);
     }
