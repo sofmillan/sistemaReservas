@@ -26,6 +26,9 @@ public class ClientService {
         if(client.getClientId()==null){
             throw new InvalidDataException("Id cannot be null");
         }
+        if(client.getClientId()<0){
+            throw new InvalidDataException("Id cannot be negative");
+        }
         if(client.getLastName()==null){
             throw new InvalidDataException("Last name cannot be null");
         }

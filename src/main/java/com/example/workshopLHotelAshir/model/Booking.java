@@ -7,9 +7,9 @@ import java.util.UUID;
 public class Booking {
     @Id
     @Column(name="codigo")
-    private UUID codigo;
+    private UUID code;
     @Column(name="fechaReserva")
-    private String fechaReserva;
+    private String bookingDate;
 
     @ManyToOne
     @JoinColumn(name="cedula")
@@ -24,26 +24,27 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(Client client, Room room, String fechaReserva) {
-        this.codigo = UUID.randomUUID();
-        this.fechaReserva = fechaReserva;
+    public Booking( String bookingDate, Client client, Room room) {
+        this.code = UUID.randomUUID();
+        this.bookingDate = bookingDate;
         this.client = client;
         this.room = room;
+        this.total = total;
     }
 
-    public UUID getCodigo() {
-        return codigo;
+    public UUID getCode() {
+        return code;
     }
 
-    public String getFechaReserva() {
-        return fechaReserva;
+    public String getBookingDate() {
+        return bookingDate;
     }
 
-    public Client getCliente() {
+    public Client getClient() {
         return client;
     }
 
-    public Room getHabitacion() {
+    public Room getRoom() {
         return room;
     }
 

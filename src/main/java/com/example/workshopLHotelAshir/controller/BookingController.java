@@ -1,8 +1,8 @@
 package com.example.workshopLHotelAshir.controller;
 
-import com.example.workshopLHotelAshir.dto.BookingDTO;
+import com.example.workshopLHotelAshir.dto.BookingConfirmationDTO;
+import com.example.workshopLHotelAshir.dto.BookingsByClientDTO;
 import com.example.workshopLHotelAshir.model.Room;
-import com.example.workshopLHotelAshir.model.Booking;
 import com.example.workshopLHotelAshir.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,33 +14,33 @@ import java.util.Set;
 @RestController
 @RequestMapping("api/v1")
 public class BookingController {
-    private BookingService reservaService;
+    private BookingService bookingService;
 
     @Autowired
-    public BookingController(BookingService reservaService) {
-        this.reservaService = reservaService;
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
     }
 
-    @PostMapping("/cliente/{cedula}/habitacion/{numero}/fecha/{fechaReserva}/reservar")
-    public ResponseEntity<BookingDTO> add(@PathVariable ("cedula") Long cedula,
-                                          @PathVariable ("numero") Integer numero,
-                                          @PathVariable ("fechaReserva") String fechaReserva){
-        BookingDTO confirmacion = reservaService.reservar(cedula, numero, fechaReserva);
-        return ResponseEntity.ok(confirmacion);
+    @PostMapping("/client/{idClient}/room/{roomNumber}/date/{bookingDate}/book")
+    public ResponseEntity<BookingConfirmationDTO> add(@PathVariable ("idClient") Long idClient,
+                                                      @PathVariable ("roomNumber") Integer roomNumber,
+                                                      @PathVariable ("bookingDate") String bookingDate){
+        BookingConfirmationDTO confirmation = bookingService.book(idClient, roomNumber, bookingDate);
+        return ResponseEntity.ok(confirmation);
     }
 
 
-    @GetMapping("/cliente/{cedula}")
-    public List<Booking> getByClient(@PathVariable Long cedula){
-        return this.reservaService.getByClient(cedula);
+    @GetMapping("/client/{idClient}")
+    public List<BookingsByClientDTO> getByClient(@PathVariable Long idClient){
+        return this.bookingService.getByClient(idClient);
     }
 
-    @GetMapping("/disponible-fecha")
-    public Set<Room> getByDate(@RequestParam String fecha){
-        return this.reservaService.getByDate(fecha);
+    @GetMapping("/availableByDate")
+    public Set<Room> getByDate(@RequestParam String date){
+        return this.bookingService.getByDate(date);
     }
-    @GetMapping("/disponible-fecha-tipo")
-    public List<Room> getByDateType(@RequestParam String fecha, @RequestParam String tipo){
-        return this.reservaService.getByDateType(fecha,tipo);
+    @GetMapping("/availableByDateType")
+    public Set<Room> getByDateType(@RequestParam String date, @RequestParam String type){
+        return this.bookingService.getByDateType(date,type);
     }
 }

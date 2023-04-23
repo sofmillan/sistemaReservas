@@ -10,8 +10,8 @@ import javax.persistence.Table;
 public class Room {
 
     @Id
-    @Column(name="bookNumber")
-    private Integer bookNumber;
+    @Column(name="roomNumber")
+    private Integer roomNumber;
 
     @Column(name="type")
     private String type;
@@ -22,13 +22,13 @@ public class Room {
     public Room(){}
 
     public Room(Integer bookNumber, String type, Double basePrice) {
-        this.bookNumber = bookNumber;
+        this.roomNumber = bookNumber;
         this.type = type;
         this.basePrice = basePrice;
     }
 
-    public Integer getBookNumber() {
-        return bookNumber;
+    public Integer getRoomNumber() {
+        return roomNumber;
     }
 
     public String getType() {

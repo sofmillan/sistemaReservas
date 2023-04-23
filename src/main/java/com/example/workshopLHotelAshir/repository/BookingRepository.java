@@ -13,22 +13,24 @@ import java.util.UUID;
 
 @Repository
 public interface BookingRepository extends CrudRepository<Booking, UUID> {
-    @Query("SELECT r FROM Reserva r WHERE r.cliente.cedula = ?1")
-    public List<Booking> findAllById(Long keyword);
+    @Query("SELECT b FROM Booking b WHERE b.client.clientId = ?1")
+    List<Booking> findAllById(Long id);
 
-    @Query("Select  h FROM Habitacion h, Reserva r WHERE h.numero not in(SELECT habitacion.numero from Reserva) " +
-            "OR h.numero not in(select distinct r.habitacion.numero from  Reserva r where r.fechaReserva= ?1)")
-    public Set<Room> findByDate(String fecha);
+    @Query("Select r FROM Room r, Booking b WHERE r.roomNumber not in(SELECT room.roomNumber from Booking) " +
+            "OR r.roomNumber not in(select distinct b.room.roomNumber from  Booking b where b.bookingDate= ?1)")
+    Set<Room> findByDate(String date);
 
-    @Query("Select  h FROM Habitacion h, Reserva r WHERE (h.numero not in(SELECT habitacion.numero from Reserva) " +
-            "OR h.numero not in(select distinct r.habitacion.numero from  Reserva r where r.fechaReserva= ?1)) AND h.tipoHabitacion=?2")
-    public List<Room> findByDateType(String fecha, String tipo);
+    @Query("Select r FROM Room r, Booking b WHERE (r.roomNumber  not in(SELECT room.roomNumber from Booking) " +
+            "OR r.roomNumber not in(select distinct b.room.roomNumber from  Booking b where b.bookingDate = ?1)) AND r.type=?2")
+    Set<Room> findByDateType(String date, String type);
 
-    @Query("Select h.numero FROM Habitacion h, Reserva r WHERE h.numero not in(SELECT habitacion.numero from Reserva) " +
-            "OR h.numero not in(select distinct r.habitacion.numero from  Reserva r where r.fechaReserva= ?1)")
-    public List<Integer> getAvailability(String fecha);
+    @Query("Select r.roomNumber FROM Room r, Booking b WHERE r.roomNumber not in(SELECT room.roomNumber from Booking) " +
+            "OR r.roomNumber not in(select distinct b.room.roomNumber from  Booking b where b.bookingDate= ?1)")
+    List<Integer> getAvailability(String date);
 
-    @Query("select count(*) from Reserva")
-    public Integer cantidadReservas();
+    @Query("select count(*) from Booking")
+    Integer getAmountBookings();
+
+
 }
 
