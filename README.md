@@ -66,7 +66,7 @@ http://localhost:8080/api/v1/client/1/room/101/date/2023-05-05/book
 **Expected response:**
 ```json
 {
-	"bookingCode": "27d0a929-326f-4724-a334-97b3bcf73137",
+"bookingCode": "27d0a929-326f-4724-a334-97b3bcf73137",
 	"bookingDate": "2023-05-05",
 	"roomNumber": 101,
 	"total": 95000.0
@@ -105,6 +105,9 @@ http://localhost:8080/api/v1/client/1
 ```
 #### GET: api/v1/availableByDate?date={date}
 To get all the available rooms for a specific date just indicate it in the path.
+
+**Request example:**
 ```
 http://localhost:8080/api/v1/availableByDate?date=2023-05-05
 ```
+**Expected response:**
