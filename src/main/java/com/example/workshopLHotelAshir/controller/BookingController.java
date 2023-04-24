@@ -31,7 +31,7 @@ public class BookingController {
             @ApiResponse(code = 200, message = "Room booked successfully"),
             @ApiResponse(code = 400, message = "Data is not valid, check the input"),
             @ApiResponse(code = 409, message = "This room is already booked, try another date"),
-            @ApiResponse(code = 409, message = "Some data was not found")
+            @ApiResponse(code = 500, message = "Some data was not found")
     })
     @PostMapping("/client/{idClient}/room/{roomNumber}/date/{bookingDate}/book")
     public ResponseEntity<BookingConfirmationDTO> book(@PathVariable ("idClient") Long idClient,
