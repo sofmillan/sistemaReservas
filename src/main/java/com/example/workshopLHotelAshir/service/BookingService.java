@@ -1,7 +1,7 @@
 package com.example.workshopLHotelAshir.service;
 
 import com.example.workshopLHotelAshir.dto.BookingConfirmationDTO;
-import com.example.workshopLHotelAshir.dto.BookingsByClientDTO;
+import com.example.workshopLHotelAshir.dto.BookingByClientDTO;
 import com.example.workshopLHotelAshir.exceptions.*;
 import com.example.workshopLHotelAshir.model.Client;
 import com.example.workshopLHotelAshir.model.Room;
@@ -87,14 +87,14 @@ public class BookingService {
 
     }
 
-    public List<BookingsByClientDTO> getByClient(Long idClient){
+    public List<BookingByClientDTO> getByClient(Long idClient){
         Optional<Client> optionalClient = this.clientRepository.findById(idClient);
         if(optionalClient.isEmpty()){
             throw new DataNotFoundException("Client with id "+idClient+" is not registered.");
         }
         return this.bookingRepository.findAllById(idClient)
                 .stream()
-                .map(booking-> new BookingsByClientDTO(
+                .map(booking-> new BookingByClientDTO(
                         booking.getClient().getClientId(),
                         booking.getClient().getName() +" "+booking.getClient().getLastName(),
                         booking.getCode(),

@@ -1,8 +1,8 @@
 package com.example.workshopLHotelAshir.dto;
 
 import java.util.UUID;
-public class BookingsByClientDTO {
-    private Long idClient;
+public class BookingByClientDTO {
+    private Long clientId;
     private String clientFullName;
     private UUID bookingCode;
     private String bookingDate;
@@ -10,11 +10,11 @@ public class BookingsByClientDTO {
     private String roomType;
     private Double total;
 
-    public BookingsByClientDTO(){}
+    public BookingByClientDTO(){}
 
-    public BookingsByClientDTO(Long idClient, String clientFullName, UUID bookingCode,
-                               String bookingDate, Integer roomNumber, String roomType, Double total) {
-        this.idClient = idClient;
+    public BookingByClientDTO(Long clientId, String clientFullName, UUID bookingCode,
+                              String bookingDate, Integer roomNumber, String roomType, Double total) {
+        this.clientId = clientId;
         this.clientFullName = clientFullName;
         this.bookingCode = bookingCode;
         this.bookingDate = bookingDate;
@@ -23,8 +23,8 @@ public class BookingsByClientDTO {
         this.total = total;
     }
 
-    public Long getIdClient() {
-        return idClient;
+    public Long getClientId() {
+        return clientId;
     }
 
     public String getClientFullName() {

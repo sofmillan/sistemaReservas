@@ -1,7 +1,7 @@
 package com.example.workshopLHotelAshir.controller;
 
 import com.example.workshopLHotelAshir.dto.BookingConfirmationDTO;
-import com.example.workshopLHotelAshir.dto.BookingsByClientDTO;
+import com.example.workshopLHotelAshir.dto.BookingByClientDTO;
 import com.example.workshopLHotelAshir.model.Room;
 import com.example.workshopLHotelAshir.service.BookingService;
 import io.swagger.annotations.Api;
@@ -19,7 +19,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("api/v1")
 public class BookingController {
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     @Autowired
     public BookingController(BookingService bookingService) {
@@ -34,7 +34,7 @@ public class BookingController {
             @ApiResponse(code = 409, message = "Some data was not found")
     })
     @PostMapping("/client/{idClient}/room/{roomNumber}/date/{bookingDate}/book")
-    public ResponseEntity<BookingConfirmationDTO> add(@PathVariable ("idClient") Long idClient,
+    public ResponseEntity<BookingConfirmationDTO> book(@PathVariable ("idClient") Long idClient,
                                                       @PathVariable ("roomNumber") Integer roomNumber,
                                                       @PathVariable ("bookingDate") String bookingDate){
         BookingConfirmationDTO confirmation = bookingService.book(idClient, roomNumber, bookingDate);
@@ -47,7 +47,7 @@ public class BookingController {
             @ApiResponse(code = 409, message = "Some data was not found")
     })
     @GetMapping("/client/{idClient}")
-    public List<BookingsByClientDTO> getByClient(@PathVariable Long idClient){
+    public List<BookingByClientDTO> getByClient(@PathVariable Long idClient){
         return this.bookingService.getByClient(idClient);
     }
 

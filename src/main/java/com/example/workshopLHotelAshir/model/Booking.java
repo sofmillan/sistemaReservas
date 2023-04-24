@@ -3,19 +3,21 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name="reserva")
+@Table(name="bookings")
 public class Booking {
     @Id
-    @Column(name="codigo")
+    @Column(name="bookingCode")
     private UUID code;
-    @Column(name="fechaReserva")
+
+    @Column(name="bookingDate")
     private String bookingDate;
 
     @ManyToOne
-    @JoinColumn(name="cedula")
+    @JoinColumn(name="clientId")
     private Client client;
+
     @ManyToOne
-    @JoinColumn(name="numero")
+    @JoinColumn(name="roomNumber")
     private Room room;
 
     @Column(name="total")
@@ -29,7 +31,6 @@ public class Booking {
         this.bookingDate = bookingDate;
         this.client = client;
         this.room = room;
-        this.total = total;
     }
 
     public UUID getCode() {

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class ClientService {
 
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     @Autowired
     public ClientService(ClientRepository clientRepository) {

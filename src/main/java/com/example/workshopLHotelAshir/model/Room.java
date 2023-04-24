@@ -21,8 +21,8 @@ public class Room {
 
     public Room(){}
 
-    public Room(Integer bookNumber, String type, Double basePrice) {
-        this.roomNumber = bookNumber;
+    public Room(Integer roomNumber, String type, Double basePrice) {
+        this.roomNumber = roomNumber;
         this.type = type;
         this.basePrice = basePrice;
     }
